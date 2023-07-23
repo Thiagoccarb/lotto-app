@@ -1,0 +1,15 @@
+aiohttp
+beautifulsoup4
+selenium
+aioselenium
+webdriver_manager
+undetected-chromedriver
+
+motor
+fastapi
+uvicorn
+pydantic[dotenv]
+python-dotenv
+flake8
+black
+pydantic_settings
