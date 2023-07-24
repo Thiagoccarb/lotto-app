@@ -1,9 +1,13 @@
+from typing import List
+
+from pydantic import BaseModel, validator
+from utils.status_error import StatusError
 from schemas.base_schemas import BaseResponse
 from database.models.lotofacil_model import Lotofacil, LotofacilModel
 
 
 class AddLotofacilRequest(LotofacilModel):
-    
+    id: int
     model_config = {
         "json_schema_extra": {
             "example": {

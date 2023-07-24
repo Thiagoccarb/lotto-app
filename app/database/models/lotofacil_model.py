@@ -1,5 +1,5 @@
 import datetime
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -14,6 +14,7 @@ class LotofacilModel(BaseModel):
     numbers: List[int]
     prizes_data: List[PrizeDataItem]
     last_draw: bool = False
+    id: int
 
 class Lotofacil(LotofacilModel):
-    id: str = Field(alias='_id')
+    _id: Optional[str] = Field(exclude = True)

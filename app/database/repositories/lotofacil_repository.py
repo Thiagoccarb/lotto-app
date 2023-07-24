@@ -26,9 +26,8 @@ class LotofacilRepositoryMongoDB(LotofacilRepository):
         item_data = lotofacil_data.model_dump()
         result = await collection.insert_one(item_data)
         new_data = await collection.find_one({"_id": result.inserted_id})
-        new_data['_id'] = str(result.inserted_id)
+        del new_data['_id']
         return Lotofacil(**new_data)
-    
     async def find_by_id(self, id: str) -> Lotofacil:
         collection: AsyncIOMotorCollection = self.db["lotto"]
         document = await collection.find_one({"id": id})
