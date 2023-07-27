@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from bson.objectid import ObjectId
+from typing import List
 from motor.motor_asyncio import AsyncIOMotorCollection
 from database.create_db import db
 
@@ -15,6 +15,15 @@ class LotofacilRepository(ABC):
     @abstractmethod
     async def find_by_id(self, id: str) -> Lotofacil:
             raise NotImplementedError
+        
+    @abstractmethod
+    async def find_by_ids(self, ids: List[str]) -> List[Lotofacil]:
+            raise NotImplementedError
+
+    @abstractmethod
+    async def batch_add(self, lotofacil_data_list: List[LotofacilModel]) -> List[Lotofacil]:
+            raise NotImplementedError
+
 
 class LotofacilRepositoryMongoDB(LotofacilRepository):
 
@@ -28,9 +37,30 @@ class LotofacilRepositoryMongoDB(LotofacilRepository):
         new_data = await collection.find_one({"_id": result.inserted_id})
         del new_data['_id']
         return Lotofacil(**new_data)
+
+    async def batch_add(self, lotofacil_data_list: List[LotofacilModel]) -> List[Lotofacil]:
+        collection: AsyncIOMotorCollection = self.db["lotto"]
+        await collection.insert_many([item.model_dump() for item in lotofacil_data_list])
+        query = {"id": {"$in": [item.id for item in lotofacil_data_list]}}
+        documents = await collection.find(query).to_list(None)
+        
+        for doc in documents:
+            del doc['_id']
+        
+        lotofacil_list = [Lotofacil(**document) for document in documents]
+        return lotofacil_list
+
     async def find_by_id(self, id: str) -> Lotofacil:
         collection: AsyncIOMotorCollection = self.db["lotto"]
         document = await collection.find_one({"id": id})
         if document:
             return Lotofacil(**document)
         return None
+
+    async def find_by_ids(self, ids: List[str]) -> List[Lotofacil]:
+        collection: AsyncIOMotorCollection = self.db["lotto"]
+        query = {"id": {"$in": ids}}
+        documents = await collection.find(query).to_list(None)
+
+        lotofacil_list = [Lotofacil(**document) for document in documents]
+        return lotofacil_list

@@ -28,6 +28,7 @@ app_router.include_router(
                                 {"points": 11, "count": 1},
                             ],
                             "last_draw": False,
+                            "id": 1
                         },
                     },
                 }

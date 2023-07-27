@@ -22,9 +22,24 @@ class AddLotofacilRequest(LotofacilModel):
                     {"points": 11, "count": 1},
                 ],
                 "last_draw": False,
+                "id": 1
             }
         }
     }
+    
+class LotofacilByNumbersRequest(BaseModel):
+    numbers: List[int]
+
+    @validator(
+        'numbers'
+    )
+    def validate_field(cls, value):
+        if not value:
+            raise StatusError('Numbers field cannot be an empty list')
+        return value
 
 class LotofacilResponse(BaseResponse):
     result: Lotofacil
+    
+class LotofacilByNumbersResponse(BaseResponse):
+    result: List[Lotofacil]
