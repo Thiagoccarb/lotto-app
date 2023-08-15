@@ -13,3 +13,5 @@ python-dotenv
 flake8
 black
 pydantic_settings
+async-lru
+cachetools
