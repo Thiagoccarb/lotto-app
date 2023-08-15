@@ -35,6 +35,6 @@ class GetResultsByNumbersService:
             results = await asyncio.gather(*tasks)
             data = await self.lotofacil_repository.batch_add([LotofacilModel(**result) for result in results])
             existing_results = [ *existing_results, *data]
-        ids = await self.lotofacil_repository.get_all_ids()
+        # ids = await self.lotofacil_repository.get_all_ids()
         return existing_results
 
