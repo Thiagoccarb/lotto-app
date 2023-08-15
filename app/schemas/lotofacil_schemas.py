@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 from pydantic import BaseModel, validator
 from utils.status_error import StatusError
@@ -36,6 +36,10 @@ class LotofacilByNumbersRequest(BaseModel):
     def validate_field(cls, value):
         if not value:
             raise StatusError('Numbers field cannot be an empty list')
+        min_length = 15
+        max_length = 21
+        if not min_length <= len(value) <= max_length:
+            raise StatusError(f'invalid input. The amount of numbers must be between 15 and 20.')
         return value
 
 class LotofacilResponse(BaseResponse):
@@ -43,3 +47,6 @@ class LotofacilResponse(BaseResponse):
     
 class LotofacilByNumbersResponse(BaseResponse):
     result: List[Lotofacil]
+
+class ValidateResponse(BaseResponse):
+    result: List[Dict[str, int]]

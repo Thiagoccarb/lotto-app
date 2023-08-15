@@ -1,6 +1,6 @@
 from fastapi.routing import APIRouter
 
-from schemas.lotofacil_schemas import LotofacilByNumbersResponse, LotofacilResponse
+from schemas.lotofacil_schemas import LotofacilByNumbersResponse, LotofacilResponse, ValidateResponse
 from controlllers.lotofacil_controller import LotofacilController
 
 
@@ -31,4 +31,12 @@ lotofacil_router.add_api_route(
     methods=["POST"],
     status_code=200,
     response_model=LotofacilByNumbersResponse,
+)
+
+lotofacil_router.add_api_route(
+    "/validate",
+    lotofacil_controller.validate,
+    methods=["POST"],
+    status_code=200,
+    response_model=ValidateResponse,
 )

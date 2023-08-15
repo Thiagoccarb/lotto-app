@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 from motor.motor_asyncio import AsyncIOMotorCollection
-from database.create_db import db
 
+from database.create_db import db
 from database.models.lotofacil_model import Lotofacil, LotofacilModel
-  
   
 class LotofacilRepository(ABC):
 
@@ -23,7 +22,10 @@ class LotofacilRepository(ABC):
     @abstractmethod
     async def batch_add(self, lotofacil_data_list: List[LotofacilModel]) -> List[Lotofacil]:
             raise NotImplementedError
-
+        
+    @abstractmethod
+    async def find_all(self) -> List[Lotofacil]:
+            raise NotImplementedError
 
 class LotofacilRepositoryMongoDB(LotofacilRepository):
 
@@ -80,3 +82,9 @@ class LotofacilRepositoryMongoDB(LotofacilRepository):
         ids = [document["id"] async for document in cursor]
 
         return ids
+    
+    async def find_all(self) -> List[Lotofacil]:
+        collection: AsyncIOMotorCollection = self.db["lotofacil"]
+        documents = await collection.find({}).to_list(None)
+        lotofacil_list = [Lotofacil(**document) for document in documents]
+        return lotofacil_list
