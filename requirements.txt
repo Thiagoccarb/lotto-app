@@ -16,3 +16,6 @@ pydantic_settings
 async-lru
 cachetools
 asynctest
+aioredis
+ipython
+orjson
