@@ -3,6 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
+from utils.middleware import IpTrackerMiddleware
 from utils.update_db import create_all_results_in_db
 from utils.status_error import StatusError
 from error_handlers.status_error_handler import handle_status_error_exception
@@ -23,8 +24,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 async def handle_exception(_, exc: StatusError):
     return await handle_status_error_exception(exc)
 
+app.add_middleware(IpTrackerMiddleware)
 app.add_middleware(GZipMiddleware, minimum_size=1000)
-
 
 app.add_middleware(
     CORSMiddleware,
