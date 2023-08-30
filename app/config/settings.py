@@ -7,6 +7,7 @@ load_dotenv()
 
 MONGO_URL = os.getenv("MONGO_URL")
 MONGO_DB = os.getenv("MONGO_DB")
+REDIS_PASS = os.getenv("REDIS_PASS")
 
 class Settings(BaseSettings):
     class Config:
@@ -24,5 +25,5 @@ class Settings(BaseSettings):
     # Database
     MONGO_URL: str = MONGO_URL
     MONGO_DB: str = MONGO_DB
-
+    REDIS_PASS: str = REDIS_PASS
 settings = Settings()

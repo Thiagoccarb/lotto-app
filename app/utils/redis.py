@@ -2,11 +2,14 @@ import json
 from typing import Any
 import aioredis
 
+from config import settings
+
+REDIS_PASS = settings.REDIS_PASS
 
 class RedisCache:
     def __init__(self, ttl_seconds: int = 60)-> None:
         self.redis = aioredis.from_url(
-            "redis://:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81@localhost:6379/0",
+            f"redis://:{REDIS_PASS}@localhost:6379/0",
             encoding="utf-8",
             decode_responses=True
         )
